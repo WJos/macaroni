@@ -119,6 +119,18 @@ class ClientController extends Controller
         return redirect()->route('clients.index');
     }
 
+    public function supp($id)
+    {
+        // delete
+        $user = User::whereHas('roles', function($q){
+            $q->where('name', 'Client');
+        })->where('id', $id)->delete();
+
+        // redirect
+        //Session::flash('message', 'Successfully deleted the shark!');
+        return redirect()->route('clients.index');
+    }
+
     /**
      * Active|Desactivate the specified resource from storage.
      */

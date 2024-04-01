@@ -32,7 +32,9 @@ Route::middleware('auth')->group(function () {
     Route::resource('/users', UserController::class);
     Route::resource('/clients', ClientController::class);
 	Route::get('/users/statut/{id}', [UserController::class, "statut"])->name("user_statut");
+	Route::get('/users/supp/{id}', [UserController::class, "supp"])->name("user_supp");
     Route::get('/clients/statut/{id}', [ClientController::class, "statut"])->name("client_statut");
+    Route::get('/clients/supp/{id}', [ClientController::class, "supp"])->name("client_supp");
 
     // Route::get('/users-list', UserController::class)->name('users-list');
     // Route::get('/users-create', UserController::class)->name('user-create');

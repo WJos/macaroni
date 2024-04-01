@@ -74,8 +74,9 @@
                             <a href="{{ route('users.edit', $user->id) }}" class="btn btn-sm btn-warning" ><i class="fas fa-edit" alt="Modifier"></i></a>
                             <a href="{{ route('user_statut', $user->id) }}" class="btn btn-sm @if($user->statut) btn-success @else btn-secondary @endif" ><i class="fas fa-key" alt="Activer|Désactiver"></i></a>
                             @role('Super-Admin')
-                            <a href="{{ $user->enreg_id }})" class="btn btn-sm btn-danger" onclick="confirm('Are you sure to delete?') || event.stopImmediatePropagation()"><i class="fas fa-trash"></i></a>
+                            <a href="{{ route('user_supp', $user->id) }}" class="btn btn-sm btn-danger" onclick="confirm('Are you sure to delete?') || event.stopImmediatePropagation()"><i class="fas fa-trash"></i></a>
                             @endrole
+                            
                         </td>
                     </tr>
                     @endforeach

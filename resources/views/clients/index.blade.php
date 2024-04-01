@@ -73,7 +73,7 @@
 
                             <a href="{{ route('clients.edit', $client->id) }}" class="btn btn-sm btn-warning" ><i class="fas fa-edit" alt="Modifier"></i></a>
                             <a href="{{ route('client_statut', $client->id) }}" class="btn btn-sm @if($client->statut) btn-success @else btn-secondary @endif" ><i class="fas fa-key" alt="Activer|Désactiver"></i></a>
-                            <a href="{{ $client->enreg_id }})" class="btn btn-sm btn-danger" onclick="confirm('Are you sure to delete?') || event.stopImmediatePropagation()"><i class="fas fa-trash"></i></a>
+                            <a href="{{ route('client_supp', $client->id) }}" class="btn btn-sm btn-danger" onclick="confirm('Are you sure to delete?') || event.stopImmediatePropagation()"><i class="fas fa-trash"></i></a>
                         </td>
                     </tr>
                     @endforeach

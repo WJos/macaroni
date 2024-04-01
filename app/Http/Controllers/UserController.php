@@ -122,6 +122,23 @@ class UserController extends Controller
         return redirect()->route('users.index');
     }
 
+
+    public function supp($id)
+    {
+        // delete
+        $user = User::whereHas('roles', function($q){
+            $q->where('name', '<>' ,'Client');
+        })->where('id', $id)->delete();
+        
+
+        // redirect
+        //Session::flash('message', 'Successfully deleted the shark!');
+        return redirect()->route('users.index');
+    }
+
+
+    
+
     /**
      * Active|Desactivate the specified resource from storage.
      */
