@@ -401,9 +401,7 @@
                     <th>Client</th>
                     <th>Train</th>
                     <th>Position Act</th>
-                    @role('Super-Admin|Admin|User')
                     <th>Actions</th>
-                    @endrole
                   </tr>
                   </thead>
                   <tbody>
@@ -471,9 +469,7 @@
                     <th>Client</th>
                     <th>Train</th>
                     <th>Position Act</th>
-                    @role('Super-Admin|Admin|User')
                     <th>Actions</th>
-                    @endrole
                   </tr>
                   </tfoot>
                 </table>
