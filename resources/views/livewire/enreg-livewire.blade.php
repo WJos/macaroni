@@ -444,16 +444,16 @@
                         {{-- <td class="text-left">{{ $list->num_wagon }}</td> --}}
                         {{-- <td>
                         </td> --}}
-                        @role('Super-Admin|Admin|User')
                         <td>
                             <button wire:click="show({{ $list->enreg_id }})" class="btn btn-sm btn-info" data-toggle="modal" data-target="#enreg-modal-lg" title="Voir"><i class="fas fa-eye"></i></button>
                             {{-- <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#enreg-modal-lg"><i class="fas fa-plus pr-1"></i>Nouveau</button>                     --}}
-
+                            @role('Super-Admin|Admin|User')
                             <button wire:click="edit({{ $list->enreg_id }})" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#enreg-modal-lg" title="Modifier"><i class="fas fa-edit"></i></button>
                             <button wire:click="valide({{ $list->enreg_id }})" class="btn btn-sm btn-success" title="Valider l'arrivée" onclick="confirm('Confirmez-vous l\'arrivée du wagon?') || event.stopImmediatePropagation()"><i class="fas fa-check"></i></button>
                             <button wire:click="delete({{ $list->enreg_id }})" class="btn btn-sm btn-danger" onclick="confirm('Etes vous de vouloir supprimer ?') || event.stopImmediatePropagation()"><i class="fas fa-trash"></i></button>
+                            @endrole
                         </td>
-                        @endrole
+                       
                       </tr>
                     @endforeach
                     @endisset
