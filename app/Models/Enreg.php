@@ -38,7 +38,9 @@ class Enreg extends Model
     'num_bon',
     'chauffeur',
     'num_chauffeur',
-    'num_camion'
+    'num_camion',
+    'online',
+    'offline'
    ];
 
 

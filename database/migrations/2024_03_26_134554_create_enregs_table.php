@@ -39,8 +39,8 @@ return new class extends Migration
             $table->string('chauffeur')->nullable();
             $table->string('num_chauffeur')->nullable();
             $table->string('num_camion')->nullable();
-            $table->boolean('online')->default(0);
-            $table->boolean('offline')->default(1);
+            $table->boolean('online')->default(false);
+            $table->boolean('offline')->default(true);
             $table->string('statut')->default('N');
 
             $table->unsignedBigInteger('created_by')->nullable();

@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\OfflineSyncController;
 use App\Livewire\EnregLivewire;
 use App\Livewire\ValideLivewire;
 use App\Livewire\ArchiveLivewire;
@@ -46,6 +47,15 @@ Route::middleware('auth')->group(function () {
 
 
 
+
+
 });
 
 require __DIR__.'/auth.php';
+
+
+Route::get('/offline_sync/postData', [OfflineSyncController::class, "postData"]);
+
+Route::get('/offline_sync/getData', [OfflineSyncController::class, "getData"]);
+
+Route::get('/offline_sync/testGetData', [OfflineSyncController::class, "testGetData"]);
