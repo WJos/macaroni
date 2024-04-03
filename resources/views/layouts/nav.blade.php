@@ -66,7 +66,7 @@
 
     <li class="nav-item">
       <a href="{{ route('users.index') }}" class="nav-link {{ str_contains(Route::currentRouteName(), 'users.') ? 'active' : '' }}">
-        <i class="nav-icon fas fa-folder"></i>
+        <i class="nav-icon fas fa-user"></i>
         <p>
           Utlisateurs
           {{-- <i class="fas fa-angle-left right"></i> --}}
@@ -76,7 +76,7 @@
 
     <li class="nav-item">
       <a href="{{ route('clients.index') }}" class="nav-link {{ str_contains(Route::currentRouteName(), 'clients.') ? 'active' : '' }}">
-        <i class="nav-icon fas fa-folder"></i>
+        <i class="nav-icon fas fa-user"></i>
         <p>
           Clients
           {{-- <i class="fas fa-angle-left right"></i> --}}
