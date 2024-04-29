@@ -28,14 +28,15 @@ class OfflineSyncController extends Controller
                     ->where('offline',1)
                     ->get();
 
-        $enregs = DB::table('enregs')->where('online',0)
+        $enregs = DB::table('enregs')
+                    ->where('online',0)
                     ->where('offline',1)
                     ->get();
         
         $data = array('status' => 'success', 'data' => array('users' => $users, 'enregs' => $enregs));        
 
         try {
-        $response = Http::post('https://e-macaroni.com/public/online_sync/postData',$data);
+        $response = Http::post('http://localhost:8001/online_sync/postData',$data);
                             // ->get('http://localhost:8001/online_sync/getData');https://jsonplaceholder.typicode.com/posts
                             //https://e-macaroni.com/public/online_sync/postData
 
@@ -72,9 +73,9 @@ class OfflineSyncController extends Controller
             }
         }
         return json_encode($jsonData);
-    }else {
-        return array('status' => 'ifOfflinePostDataError');
-    }
+        }else {
+            return array('status' => 'ifOfflinePostDataError');
+        }
 
         } catch (\Throwable $th) {
 
@@ -89,7 +90,7 @@ class OfflineSyncController extends Controller
 
     public function getData()
     {
-        $response = Http::get('https://e-macaroni.com/public/online_sync/getData');
+        $response = Http::get('http://localhost:8001/online_sync/getData');
                             // ->get('http://localhost:8001/online_sync/getData');https://jsonplaceholder.typicode.com/posts
                             //https://e-macaroni.com/public/online_sync/getData
     
@@ -97,7 +98,7 @@ class OfflineSyncController extends Controller
                   
         // dd($jsonData);
 
-        if ($jsonData && $jsonData['status'] === 'success') {
+        if ($jsonData && $jsonData['status'] == 'success') {
             $users = $jsonData['data']['users'];
             $enregs = $jsonData['data']['enregs'];
 
@@ -131,7 +132,7 @@ class OfflineSyncController extends Controller
             }
 
             $dataa = array('status' => 'success', 'data' => array('users' => $usersTemp, 'enregs' => $enregsTemp));
-            $response1 = Http::post('https://e-macaroni.com/public/online_sync/updateGetData',$dataa);
+            $response1 = Http::post('http://localhost:8001/online_sync/updateGetData',$dataa);
 
             $response1->throw();
             $jsonDataa = $response1->json();

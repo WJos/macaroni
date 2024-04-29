@@ -59,6 +59,7 @@
                           @error('user_id') <div class="invalid-feedback">{{ $message }}</div> @enderror                       
                         </div>
                         <div class="form-group">
+                          <input type="hidden" wire:model="enreg_edit">
                         </div>
                        
                       </div>
@@ -143,6 +144,7 @@
                             <option value="Dimbokro">Dimbokro</option>
                             <option value="Bouake">Bouaké</option>
                             <option value="Ferkessedougou">Ferkessédougou</option>
+                            <option value="Bobo">Bobo Dioulasso</option>
                             <option value="Koudougou">Koudougou</option>
                             <option value="Ouagadougou">Ouagadougou</option>
                           </select>
@@ -337,9 +339,9 @@
               <div class="card-header">
                 @role('Super-Admin|Admin|User')
                 <div class="row">
-                  <div class="col-4">
+                  <div class="col-xs-12 col-sm-1 col-md-4">
                   </div>
-                  <div class="col-4">
+                  <div class="col-xs-12 col-sm-10 col-md-4">
                     <div class="form-group">
                       <label for="position_actu">Filter par client</label>
                       <select id="client_fliter" class="form-control @error('client_fliter') is-invalid @enderror" autocomplete="off" style="width: 100%;" wire:model.live="client_fliter">
@@ -350,33 +352,35 @@
                       </select>
                     </div>
                   </div>
-                  <div class="col-4">
+                  <div class="col-xs-12 col-sm-1 col-md-4">
                   </div>
                 </div>
                 </br>
                 @endrole
                 <div class="row">
-                  <div class="col-2">
-                    <button type="button" wire:click="new()" class="btn btn-dark" data-toggle="modal" data-target="#enreg-modal-lg"><i class="fas fa-plus pr-1"></i>Nouveau</button>                    
+                  <div class="col-xs-12 col-sm-2 col-md-2">
+                    <label for="position_actu">Enregistrement</label></br>
+                    <button type="button" wire:click="new()" class="btn btn-dark" data-toggle="modal" data-target="#enreg-modal-lg"><i class="fas fa-plus pr-1"></i>Train</button>                    
                       {{-- <button wire:click="create()" class="btn btn-dark"><i class="fas fa-plus pr-1"></i> Nouveau</button> --}}
                   </div>
-                  <div class="col-4">
-                      <label for="position_actu">Recherche</label>
+                  <div class="col-xs-12 col-sm-2 col-md-4">
+                      <label for="position_actu">Recherche {{ $dDebut."  ".$dFin}} </label>
                       <input type="text" wire:model.live="searchTerm" placeholder="Rechercher ..." class="form-control">
                   </div>
-                  <div class="col-2">
+                  <div class="col-xs-12 col-sm-3 col-md-2">
                       <label for="position_actu">Date Debut</label>
                       <input type="date" wire:model.live="dDebut" placeholder="Date Debut." class="form-control">
                   </div>
-                  <div class="col-2">
+                  <div class="col-xs-12 col-sm-3 col-md-2">
                       <label for="position_actu">Date Fin</label>
                       <input type="date" wire:model.live="dFin" placeholder="Date Fin ..." class="form-control">
                   </div>
-                  <div class="col-2">
-                    <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#import-modal-lg"><i class="fas fa-plus pr-1"></i>Importer(Excel)</button>                    
+                  <div class="col-xs-12 col-sm-2 col-md-2">
+                    <label for="position_actu">Importation</label></br>
+                    <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#import-modal-lg"><i class="fas fa-plus pr-1"></i>Excel</button>                    
                       {{-- <button wire:click="create()" class="btn btn-dark"><i class="fas fa-plus pr-1"></i> Nouveau</button> --}}
                   </div>
-              </div>                
+              </div>                   
               </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -395,12 +399,12 @@
                     <th>N° Dossier</th>
                     <th>Type</th>
                     <th>N° TC</th>
-                    <th>Posit/Plomb</th>
+                    <th>Type Marchandise /Plomb</th>
                     <th>Poids</th>
-                    <th>Dest</th>
                     <th>Client</th>
                     <th>Train</th>
                     <th>Position Act</th>
+                    <th>Date Entrée</th>
                     <th>Actions</th>
                   </tr>
                   </thead>
@@ -431,17 +435,12 @@
                         <td class="text-left">{{ $list->num_dossier }}</td>
                         <td class="text-left">{{ $list->type }}</td>
                         <td class="text-left">{{ $list->num_tc }}</td>
-                        <td class="text-left">{{ $list->posit_plomb }}</td>
+                        <td class="text-left">{{ $list->type_marchandise }}</td>
                         <td class="text-left">{{ $list->poids }}</td>
-                        <td class="text-left">{{ $list->destination }}</td>
-                        {{-- <td class="text-left">{{ $list->destination }}</td> --}}
                         <td class="text-left">{{ $list->user->name }}</td>
                         <td class="text-left">{{ $list->train }}</td>
                         <td class="text-left">{{ $list->position_actu }}</td>
-                        {{-- <td>{{ number_format( $list->num_wagon ) }}</td> --}}
-                        {{-- <td class="text-left">{{ $list->num_wagon }}</td> --}}
-                        {{-- <td>
-                        </td> --}}
+                        <td class="text-left">{{ $list->date_entree }}</td>
                         <td>
                             <button wire:click="show({{ $list->enreg_id }})" class="btn btn-sm btn-info" data-toggle="modal" data-target="#enreg-modal-lg" title="Voir"><i class="fas fa-eye"></i></button>
                             {{-- <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#enreg-modal-lg"><i class="fas fa-plus pr-1"></i>Nouveau</button>                     --}}
@@ -463,12 +462,12 @@
                     <th>N° Dossier</th>
                     <th>Type</th>
                     <th>N° TC</th>
-                    <th>Posit/Plomb</th>
+                    <th>Type Marchandise /Plomb</th>
                     <th>Poids</th>
-                    <th>Dest</th>
                     <th>Client</th>
                     <th>Train</th>
                     <th>Position Act</th>
+                    <th>Date Entrée</th>
                     <th>Actions</th>
                   </tr>
                   </tfoot>

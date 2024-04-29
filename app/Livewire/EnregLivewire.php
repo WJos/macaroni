@@ -12,6 +12,7 @@ use App\Imports\EnregsExport;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use Excel;
+use DB;
 
 use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
@@ -44,6 +45,7 @@ class EnregLivewire extends Component
     public $paginatedPerPages = 20;
     public $searchTerm,$dDebut,$dFin;
     public $show_flag = 0;
+    public $enreg_edit = 0;
     public $client_id = '', $client_fliter;
     public $modal_title = 'Nouvel Enregistrement';
     public $enreg_id, $user_id, $num_wagon, $num_dossier, $type, $num_tc, $posit_plomb, $poids, $destination, $position_actu;
@@ -130,11 +132,11 @@ class EnregLivewire extends Component
                     ]);})
                 ->whereHas('user', function ($searchQuery) use ($dtDebut, $dtFin){
                     if ($dtDebut && $dtFin) {
-                        $searchQuery->whereBetween('created_at',[$dtDebut, $dtFin]);
+                        $searchQuery->whereBetween('date_entree',[$dtDebut, $dtFin]);
                     } elseif($dtDebut) {
-                        $searchQuery->whereDate('created_at','>=', $dtDebut);
+                        $searchQuery->whereDate('date_entree','>=', $dtDebut);
                     } elseif($dtFin) {
-                        $searchQuery->whereDate('created_at','<=', $dtFin);
+                        $searchQuery->whereDate('date_entree','<=', $dtFin);
                     }
                     ;})
                 ->paginate($this->paginatedPerPages),
@@ -212,11 +214,11 @@ class EnregLivewire extends Component
                     ])
                     ->whereHas('user', function ($searchQuery) use ($dtDebut, $dtFin){
                         if ($dtDebut && $dtFin) {
-                            $searchQuery->whereBetween('created_at',[$dtDebut, $dtFin]);
+                            $searchQuery->whereBetween('date_entree',[$dtDebut, $dtFin]);
                         } elseif($dtDebut) {
-                            $searchQuery->whereDate('created_at','>=', $dtDebut);
+                            $searchQuery->whereDate('date_entree','>=', $dtDebut);
                         } elseif($dtFin) {
-                            $searchQuery->whereDate('created_at','<=', $dtFin);
+                            $searchQuery->whereDate('date_entree','<=', $dtFin);
                         }
                         ;})
                     ->paginate($this->paginatedPerPages),
@@ -224,7 +226,9 @@ class EnregLivewire extends Component
                     'clients' => User::whereHas('roles', function($q){
                         // $q->where('name', '<>', 'Admin');
                         $q->where('name', 'Client');
-                    })->get(),
+                    })
+                    ->orderBy('created_at', 'desc')
+                    ->get(),
         
                 ])->extends('layouts.app');
     
@@ -254,6 +258,7 @@ class EnregLivewire extends Component
     public function new(){
         $this->modal_title = 'Nouvel Enregistrement';
         $this->show_flag = 0;
+        $this->enreg_edit = 0;
         $this->resetInputFields();
     }
 
@@ -263,6 +268,7 @@ class EnregLivewire extends Component
             //dd($this->user_id);
             $messages = [
                 '*.required'                => 'Champ obligatoire',
+                '*.unique'                => 'Ce numéro tc a déjà été pris',
                 '*.numeric'                 => 'This column is required to be filled in with number',
                 '*.string'                  => 'This column is required to be filled in with letters',
                 '*.date'                  => 'This column is required to be filled in with letters',
@@ -276,30 +282,31 @@ class EnregLivewire extends Component
             //     'crud_example_try_textarea' => ['required'],
             //     'crud_example_try_number'   => ['required', 'numeric'],
             // ], $messages);
-
-            $this->validate([
-                'num_wagon' => ['required'],
-                'num_dossier' => ['required'],
-                'type'   => ['required'],
-                'num_tc' => ['required'],
-                'posit_plomb'   => ['required'],
-                'poids'   => ['required'],
-                'destination'   => ['required'],
-                'user_id'   => ['required'],
-                // 'date_entree'   => ['required'],
-                // 'date_sortie'   => ['required'],
-                // 'consignataire'   => ['required'],
-                // 'destinataire'   => ['required'],
-                // 'type_marchandise'   => ['required'],
-                // 'num_facture'   => ['required'],
-                // 'montant_facture'   => ['required'],
-                // 'percepteur'   => ['required'],
-                // 'num_declaration'   => ['required'],
-                // 'num_bon'   => ['required'],
-                // 'chauffeur'   => ['required'],
-                // 'num_chauffeur'   => ['required'],
-                // 'num_camion'   => ['required'],
-            ], $messages);
+            if ($this->enreg_edit == 0) {
+                $this->validate([
+                    'num_wagon' => ['required'],
+                    'num_dossier' => ['required'],
+                    'type'   => ['required'],
+                    'num_tc' => ['required','unique:enregs,num_tc'],
+                    'posit_plomb'   => ['required'],
+                    'poids'   => ['required'],
+                    'destination'   => ['required'],
+                    'user_id'   => ['required'],
+                    // 'date_entree'   => ['required'],
+                    // 'date_sortie'   => ['required'],
+                    // 'consignataire'   => ['required'],
+                    // 'destinataire'   => ['required'],
+                    // 'type_marchandise'   => ['required'],
+                    // 'num_facture'   => ['required'],
+                    // 'montant_facture'   => ['required'],
+                    // 'percepteur'   => ['required'],
+                    // 'num_declaration'   => ['required'],
+                    // 'num_bon'   => ['required'],
+                    // 'chauffeur'   => ['required'],
+                    // 'num_chauffeur'   => ['required'],
+                    // 'num_camion'   => ['required'],
+                ], $messages);
+            }
             
             // Delete this '$messages' variable if you don't want to use the custom message validator
     
@@ -371,6 +378,7 @@ class EnregLivewire extends Component
             $this->modal_title = 'Details Enregistrement';
             // Find data from the $id
             $this->show_flag = 1;
+            $this->enreg_edit = 0;
             $post = Enreg::findOrFail($id);
     
             // Parse data from the $post variable
@@ -408,6 +416,7 @@ class EnregLivewire extends Component
         public function edit($id){
             $this->modal_title = 'Edition Enregistrement';
             $this->show_flag = 0;
+            $this->enreg_edit = 1;
             // Find data from the $id
             $post = Enreg::findOrFail($id);
 
@@ -448,26 +457,33 @@ class EnregLivewire extends Component
 
         public function valide($id){
 
-            $enreg = Enreg::find($id);
-            $enreg->statut = 'V';
-            $enreg->save();
+            // $enreg['enreg_id'] = $id;
+            // $enreg['statut'] = 'V';
+            // $enreg['online'] = 0;
+            DB::table('enregs')
+                ->where('enreg_id', $id)
+                ->update(['statut' => 'V', 'online' => 0]);
+            // DB::table('enregs')->updateOrInsert(['enreg_id' => $id], $enreg);
+            // $enreg = Enreg::find($id);
+            // $enreg->statut = 'V';
+            // $enreg->online = '0';
+            // $enreg->save();
 
             //$this->alert('warning', 'Alright, deleted!');
         }
     
-        // Delete data
+        // SoftDelete data
         public function delete($id){
-            // Find existing photo
-            $sql = Enreg::select('enreg_id')->where('enreg_id', $id)->firstOrFail();
+            // $sql = Enreg::select('enreg_id')->where('enreg_id', $id)->firstOrFail();
+            // $sql->find($id)->delete();
+
+            $enreg = Enreg::find($id);
+            $enreg->delete();
+
+            DB::table('enregs')
+                ->where('enreg_id', $id)
+                ->update(['online' => 0]);
     
-            // Delete Data from DB
-            $sql->find($id)->delete();
-    
-            // Then delete it
-            //Storage::delete('public/asset/image/' . $sql->crud_example_try_photo);
-    
-            // Show an alert
-            // $this->alert('warning', 'Supprimé avec success!');
         }
 
 

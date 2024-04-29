@@ -4,11 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 
 class Enreg extends Model
 {
     use HasFactory;
     use \Wildside\Userstamps\Userstamps;
+    use SoftDeletes;
 
 
     protected $primaryKey = 'enreg_id';
@@ -39,8 +42,6 @@ class Enreg extends Model
     'chauffeur',
     'num_chauffeur',
     'num_camion',
-    'online',
-    'offline'
    ];
 
 

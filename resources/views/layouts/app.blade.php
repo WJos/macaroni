@@ -462,13 +462,14 @@
       //   "buttons": ["excel", "pdf", "colvis"]
       // }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
     });
-    setInterval(myFunction, 10000);
+    setInterval(myFunction, 30000);
       function myFunction() {
       // alert($('meta[name="csrf-token"]').attr('content'));
       // post_ajax('http://127.0.0.1:8000/offline_sync/saveGetData', '');
       // get_sync_ajax('http://127.0.0.1:8001/online_sync/getData','/offline_sync/saveGetData');
       // get_sync_ajax('https://e-macaroni.com/public/online_sync/getData','/offline_sync/saveGetData');
-      dataSync('https://e-macaroni.com/public/online_sync/getData','/offline_sync/postData');
+      // dataSync('https://e-macaroni.com/public/online_sync/getData','/offline_sync/postData');
+      dataSync('http://127.0.0.1:8000/offline_sync/getData','/offline_sync/postData');
       }
     $(document).ready(function(){
       //get_sync_ajax('http://127.0.0.1:8001/sync/getData','http://127.0.0.1:8001/sync/saveGetData');
