@@ -439,6 +439,7 @@
                       <td class="text-left">{{ $list->position_actu }}</td>
                       <td class="text-left">{{ $list->date_entree }}</td>
                       <td>
+                        <button wire:click="show({{ $list->enreg_id }})" class="btn btn-sm btn-info" data-toggle="modal" data-target="#enreg-modal-lg" title="Voir"><i class="fas fa-eye"></i></button>                            
                         @role('Super-Admin|Admin|User')
                         <button wire:click="edit_a({{ $list->enreg_id }})" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#enreg-modal-lg" title="Modifier"><i class="fas fa-edit"></i></button>
                           @role('Super-Admin|Admin')
